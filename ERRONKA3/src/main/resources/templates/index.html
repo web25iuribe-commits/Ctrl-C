@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Miguel Altuna - Gailuak</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-4">
+    <div class="container">
+        <a class="navbar-brand" href="#">Miguel Altuna Inbentarioa</a>
+        <div class="d-flex align-items-center">
+            <span class="text-white me-3" th:if="${currentUser != null}">Logeatutako: <strong th:text="${currentUser.izena}"></strong> (<span th:text="${role}"></span>)</span>
+            <a class="btn btn-outline-light btn-sm me-2" th:if="${currentUser == null}" th:href="@{/login}">Hasi saioa</a>
+            <a class="btn btn-light btn-sm" th:if="${currentUser != null}" th:href="@{/logout}">Irten</a>
+        </div>
+    </div>
+</nav>
+
+<div class="container">
+    <div class="p-5 mb-4 bg-white rounded-3 shadow-sm">
+        <div class="container-fluid py-5 text-center">
+            <h1 class="display-5 fw-bold" th:text="${mezua}">Hemen mezua agertuko da</h1>
+            <p class="col-md-8 fs-4 mx-auto text-muted">
+                Gailu elektronikoak, gelak eta eraikinak kudeatzeko zure web aplikazio berria.
+            </p>
+            <div th:if="${currentUser == null}">
+                <a class="btn btn-primary btn-lg" th:href="@{/login}">Hasi saioa</a>
+            </div>
+            <div th:if="${currentUser != null}">
+                <p class="lead">Saioa hasi duzu <strong th:text="${currentUser.izena}"></strong>-rekin.</p>
+            </div>
+        </div>
+    </div>
+
+    <div th:if="${currentUser != null}">
+        <div class="mb-3">
+            <div class="alert alert-success" th:if="${isAdmin}">Administradorra zara: CRUD eragiketak erabil ditzakezu.</div>
+            <div class="alert alert-info" th:if="${isUsuario}">Usuario arrunta zara: kontsultak soilik egin ditzakezu.</div>
+            <div class="alert alert-danger" th:if="${accessDenied}">Ez duzu baimenik aldaketak egiteko.</div>
+        </div>
+
+        <h3 class="mb-3">Erabiltzaileen Zerrenda</h3>
+        <div class="table-responsive bg-white p-3 rounded shadow-sm mb-5">
+            <table class="table table-hover">
+                <thead class="table-dark">
+                    <tr>
+                        <th>ID</th>
+                        <th>Izena</th>
+                        <th>Emaila</th>
+                        <th>Mota</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="erab : ${erabiltzaileak}">
+                        <td th:text="${erab.id_erab}">1</td>
+                        <td th:text="${erab.izena}">Proba Izena</td>
+                        <td th:text="${erab.helbide_elektronikoa}">proba@email.com</td>
+                        <td th:text="${erab.erabiltzaile_mota}">usuario</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h3 class="mb-3">Eraikinen Zerrenda</h3>
+        <div class="table-responsive bg-white p-3 rounded shadow-sm mb-3">
+            <table class="table table-hover align-middle">
+                <thead class="table-dark">
+                    <tr>
+                        <th>ID</th>
+                        <th>Izena</th>
+                        <th>Helbidea</th>
+                        <th>Hiria</th>
+                        <th>Posta kodea</th>
+                        <th th:if="${isAdmin}">Ekintzak</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="era : ${eraikinak}">
+                        <td th:text="${era.id_eraikina}">E001</td>
+                        <td th:text="${era.izena}">Eraikina</td>
+                        <td th:text="${era.helbidea}">Helbidea</td>
+                        <td th:text="${era.hiria}">Hiria</td>
+                        <td th:text="${era.posta_kodea}">01010</td>
+                        <td th:if="${isAdmin}">
+                            <form th:action="@{/eraikina/delete}" method="post" class="d-inline">
+                                <input type="hidden" name="id_eraikina" th:value="${era.id_eraikina}" />
+                                <button type="submit" class="btn btn-sm btn-danger">Ezabatu</button>
+                            </form>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="card bg-white p-4 rounded shadow-sm" th:if="${isAdmin}">
+            <h4 class="mb-3">Eraikin bat sortu edo eguneratu</h4>
+            <form th:action="@{/eraikina/save}" method="post">
+                <div class="row g-3">
+                    <div class="col-md-3">
+                        <label class="form-label">ID</label>
+                        <input class="form-control" type="text" name="id_eraikina" required>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label">Izena</label>
+                        <input class="form-control" type="text" name="izena" required>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label">Helbidea</label>
+                        <input class="form-control" type="text" name="helbidea" required>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label">Hiria</label>
+                        <input class="form-control" type="text" name="hiria" required>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label">Posta kodea</label>
+                        <input class="form-control" type="text" name="posta_kodea" required>
+                    </div>
+                </div>
+                <button class="btn btn-primary mt-3" type="submit">Gorde</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
