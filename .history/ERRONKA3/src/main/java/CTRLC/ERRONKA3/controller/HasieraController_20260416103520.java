@@ -14,7 +14,6 @@ import CTRLC.ERRONKA3.repository.ErabiltzaileRepository;
 import CTRLC.ERRONKA3.repository.EraikinaRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
-import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller // Spring-i esaten dio klase honek HTTP eskariak (URLak) jasoko dituela
 public class HasieraController {

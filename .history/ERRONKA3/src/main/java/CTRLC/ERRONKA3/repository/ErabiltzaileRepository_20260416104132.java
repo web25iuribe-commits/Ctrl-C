@@ -20,7 +20,7 @@ public interface ErabiltzaileRepository extends JpaRepository<erabiltzailea, Str
     Optional<erabiltzailea> findByUsernameAndPassword(@Param("username") String username,
                                                       @Param("pass") String pasahitza);
 
-    Optional<erabiltzailea> findById(String id_erab);
+    Optional<erabiltzailea> findByIdErab(String idErab);
 
     @Query("SELECT u FROM erabiltzailea u WHERE LOWER(u.izena) LIKE LOWER(CONCAT('%', :name, '%')) OR LOWER(u.abizena) LIKE LOWER(CONCAT('%', :name, '%'))")
     java.util.List<erabiltzailea> findByNameContaining(@Param("name") String name);

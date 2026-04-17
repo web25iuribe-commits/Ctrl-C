@@ -19,7 +19,6 @@ import CTRLC.ERRONKA3.repository.GailuaRepository;
 import CTRLC.ERRONKA3.repository.GelaRepository;
 import CTRLC.ERRONKA3.repository.SolairuaRepository;
 import jakarta.servlet.http.HttpSession;
-import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
 public class UserPageController {
@@ -42,7 +41,7 @@ public class UserPageController {
         this.solairuaRepository = solairuaRepository;
     }
 
-    @PostMapping("/user")
+    @GetMapping("/user")
     public String userPage(Model model,
                            HttpSession session,
                            @RequestParam(value = "searchUserId", required = false) String searchUserId,
@@ -93,7 +92,7 @@ public class UserPageController {
 
     private List<erabiltzailea> getUserSearchResults(String searchUserId, String searchUserName) {
         if (searchUserId != null && !searchUserId.isBlank()) {
-            return erabiltzaileRepository.findById(searchUserId).map(List::of).orElse(Collections.emptyList());
+            return erabiltzaileRepository.findByid_erab(searchUserId).map(List::of).orElse(Collections.emptyList());
         }
         if (searchUserName != null && !searchUserName.isBlank()) {
             return erabiltzaileRepository.findByNameContaining(searchUserName);

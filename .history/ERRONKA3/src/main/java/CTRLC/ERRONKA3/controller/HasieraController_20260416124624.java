@@ -29,7 +29,7 @@ public class HasieraController {
         this.eraikinaRepository = eraikinaRepository;
     }
 
-    @GetMapping("/login")
+    @PostMapping("/login")
     public String loginForm(Model model, @RequestParam(value = "error", required = false) String error) {
         if (error != null) {
             model.addAttribute("error", error);

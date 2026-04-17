@@ -19,7 +19,6 @@ import CTRLC.ERRONKA3.repository.GailuaRepository;
 import CTRLC.ERRONKA3.repository.GelaRepository;
 import CTRLC.ERRONKA3.repository.SolairuaRepository;
 import jakarta.servlet.http.HttpSession;
-import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
 public class UserPageController {

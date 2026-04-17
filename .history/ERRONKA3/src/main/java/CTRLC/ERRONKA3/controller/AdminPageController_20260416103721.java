@@ -19,7 +19,6 @@ import CTRLC.ERRONKA3.repository.GelaRepository;
 import CTRLC.ERRONKA3.repository.HistorikoaRepository;
 import CTRLC.ERRONKA3.repository.SolairuaRepository;
 import jakarta.servlet.http.HttpSession;
-import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
 public class AdminPageController {
@@ -45,7 +44,7 @@ public class AdminPageController {
         this.historikoaRepository = historikoaRepository;
     }
 
-    @PostMapping("/admin")
+    @GetMapping("/admin")
     public String adminPage(Model model, HttpSession session) {
         if (!isLoggedIn(session) || !isAdmin(session)) {
             return "redirect:/login";
