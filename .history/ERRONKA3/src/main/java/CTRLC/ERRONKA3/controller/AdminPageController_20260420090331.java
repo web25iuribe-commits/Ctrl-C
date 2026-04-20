@@ -19,6 +19,7 @@ import CTRLC.ERRONKA3.repository.GelaRepository;
 import CTRLC.ERRONKA3.repository.HistorikoaRepository;
 import CTRLC.ERRONKA3.repository.SolairuaRepository;
 import jakarta.servlet.http.HttpSession;
+import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 public class AdminPageController {

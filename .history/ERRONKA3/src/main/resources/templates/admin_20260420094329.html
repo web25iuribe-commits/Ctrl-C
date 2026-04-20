@@ -47,10 +47,7 @@
                                 <td th:text="${erab.helbide_elektronikoa}">jon@example.com</td>
                                 <td th:text="${erab.erabiltzaile_mota}">usuario</td>
                                 <td>
-                                    <form th:action="@{/admin/erabiltzailea/delete}" method="post" class="d-inline">
-                                        <input type="hidden" name="id_erab" th:value="${erab.id_erab}">
-                                        <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Ziur zaude erabiltzailea hau ezabatu nahi duzula?')">Ezabatu</button>
-                                    </form>
+                                    <button class="btn btn-danger btn-sm" onclick="deleteEntity('erabiltzailea', '${erab.id_erab}')">Ezabatu</button>
                                 </td>
                             </tr>
                             </tbody>
@@ -85,10 +82,7 @@
                                 <td th:text="${era.hiria}">Hiria</td>
                                 <td th:text="${era.posta_kodea}">01010</td>
                                 <td>
-                                    <form th:action="@{/admin/eraikina/delete}" method="post" class="d-inline">
-                                        <input type="hidden" name="id_eraikina" th:value="${era.id_eraikina}">
-                                        <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Ziur zaude eraikina hau ezabatu nahi duzula?')">Ezabatu</button>
-                                    </form>
+                                    <button class="btn btn-danger btn-sm" onclick="deleteEntity('eraikina', '${era.id_eraikina}')">Ezabatu</button>
                                 </td>
                             </tr>
                             </tbody>
@@ -119,10 +113,7 @@
                                 <td th:text="${g.gela_zenb}">101</td>
                                 <td th:text="${g.id_solairua}">S1</td>
                                 <td>
-                                    <form th:action="@{/admin/gela/delete}" method="post" class="d-inline">
-                                        <input type="hidden" name="gela_zenb" th:value="${g.gela_zenb}">
-                                        <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Ziur zaude gela hau ezabatu nahi duzula?')">Ezabatu</button>
-                                    </form>
+                                    <button class="btn btn-danger btn-sm" onclick="deleteEntity('gela', '${g.gela_zenb}')">Ezabatu</button>
                                 </td>
                             </tr>
                             </tbody>
@@ -157,10 +148,7 @@
                                 <td th:text="${g.serie_zenb}">SN123</td>
                                 <td th:text="${g.gela_zenb}">101</td>
                                 <td>
-                                    <form th:action="@{/admin/gailua/delete}" method="post" class="d-inline">
-                                        <input type="hidden" name="id_gailua" th:value="${g.id_gailua}">
-                                        <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Ziur zaude gailua hau ezabatu nahi duzula?')">Ezabatu</button>
-                                    </form>
+                                    <button class="btn btn-danger btn-sm" onclick="deleteEntity('gailua', '${g.id_gailua}')">Ezabatu</button>
                                 </td>
                             </tr>
                             </tbody>
@@ -191,10 +179,7 @@
                                 <td th:text="${s.solairu_zenbakia}">1</td>
                                 <td th:text="${s.id_eraikina}">E001</td>
                                 <td>
-                                    <form th:action="@{/admin/solairua/delete}" method="post" class="d-inline">
-                                        <input type="hidden" name="id_solairua" th:value="${s.id_solairua}">
-                                        <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Ziur zaude solairua hau ezabatu nahi duzula?')">Ezabatu</button>
-                                    </form>
+                                    <button class="btn btn-danger btn-sm" onclick="deleteEntity('solairua', '${s.id_solairua}')">Ezabatu</button>
                                 </td>
                             </tr>
                             </tbody>

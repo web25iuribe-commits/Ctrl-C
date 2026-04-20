@@ -56,10 +56,7 @@ public class HasieraController {
         }
         session.setAttribute("loggedUser", user);
         session.setAttribute("role", user.getErabiltzaile_mota());
-        if (isAdminRole(user.getErabiltzaile_mota())) {
-            return "redirect:/admin";
-        }
-        return "redirect:/user";
+        return "redirect:/";
     }
 
     @GetMapping("/logout")
@@ -78,11 +75,25 @@ public class HasieraController {
             return "redirect:/login";
         }
 
+        String path = request.getServletPath();
+        String mezua = switch (path) {
+            case "/eraikina" -> "Eraikinen zerrenda";
+            case "/usuarios" -> "Erabiltzaile bereziak";
+            default -> "Ongi etorri Miguel Altunako Gailuen Kudeatzailera!";
+        };
+
         String role = (String) session.getAttribute("role");
-        if (isAdminRole(role)) {
-            return "redirect:/admin";
-        }
-        return "redirect:/user";
+        boolean isAdmin = "admin".equals(role);
+
+        model.addAttribute("mezua", mezua);
+        model.addAttribute("erabiltzaileak", erabiltzaileRepository.findAll());
+        model.addAttribute("eraikinak", eraikinaRepository.findAll());
+        model.addAttribute("currentUser", loggedUser);
+        model.addAttribute("role", role);
+        model.addAttribute("isAdmin", isAdmin);
+        model.addAttribute("isUsuario", "usuario".equals(role));
+        model.addAttribute("accessDenied", accessDenied != null);
+        return "index";
     }
 
     @PostMapping("/eraikina/save")
@@ -118,10 +129,6 @@ public class HasieraController {
 
     private boolean isAdmin(HttpSession session) {
         String role = (String) session.getAttribute("role");
-        return isAdminRole(role);
-    }
-
-    private boolean isAdminRole(String role) {
-        return role != null && role.toLowerCase().contains("admin");
+        return role != null && role.equals("administrador");
     }
 }

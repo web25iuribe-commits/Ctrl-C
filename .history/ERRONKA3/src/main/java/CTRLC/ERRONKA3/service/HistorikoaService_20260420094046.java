@@ -4,7 +4,6 @@ import java.util.Date;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import CTRLC.ERRONKA3.model.historikoa;
@@ -16,19 +15,12 @@ public class HistorikoaService {
     private static final Logger LOGGER = LoggerFactory.getLogger(HistorikoaService.class);
 
     private final HistorikoaRepository historikoaRepository;
-    private final boolean appLoggingEnabled;
 
-    public HistorikoaService(HistorikoaRepository historikoaRepository,
-                             @Value("${app.historikoa.application-logging:false}") boolean appLoggingEnabled) {
+    public HistorikoaService(HistorikoaRepository historikoaRepository) {
         this.historikoaRepository = historikoaRepository;
-        this.appLoggingEnabled = appLoggingEnabled;
     }
 
     public void logAction(String taula, String ekintza, String oharra) {
-        if (!appLoggingEnabled) {
-            return;
-        }
-
         historikoa historikoa = new historikoa();
         historikoa.setTaula(taula);
         historikoa.setEkintza(ekintza);

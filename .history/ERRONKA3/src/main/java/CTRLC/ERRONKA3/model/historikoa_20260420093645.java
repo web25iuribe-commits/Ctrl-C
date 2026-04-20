@@ -1,10 +1,9 @@
 package CTRLC.ERRONKA3.model;
 
-import java.time.LocalDate;
-
-import org.springframework.format.annotation.DateTimeFormat;
-
+import java.util.Date;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
@@ -46,15 +45,15 @@ import jakarta.persistence.Table;
 
 
 @Entity
-@Table(name = "kontsulta")
-public class kontsulta {
+@Table(name = "historikoa")
+public class historikoa {
     @Id
-    private String id_kontsulta;
-    private String deskribapena;
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private LocalDate data_kontsulta;
-    private String egoera;
-    private String id_erab;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id_hist;
+    private String taula;
+    private String ekintza;
+    private Date data_aldaketa;
+    private String oharra;
 
 
 
@@ -62,46 +61,45 @@ public class kontsulta {
 
     // Getter-ak eta Setter-ak (Lombok baduzu @Data jarri dezakezu gainean)
 
-    public String getId_kontsulta() {
-        return id_kontsulta;
+    public Integer getId_hist() {
+        return id_hist;
     }
 
-    public void setId_kontsulta(String id_kontsulta) {
-        this.id_kontsulta = id_kontsulta;
+    public void setId_hist(Integer id_hist) {
+        this.id_hist = id_hist;
     }
 
-    public String getDeskribapena() {
-        return deskribapena;
+    public String getTaula() {
+        return taula;
     }
 
-    public void setDeskribapena(String deskribapena) {
-        this.deskribapena = deskribapena;
+    public void setTaula(String taula) {
+        this.taula = taula;
     }
 
-    public LocalDate getData_kontsulta() {
-        return data_kontsulta;
+    public String getEkintza() {
+        return ekintza;
     }
 
-    public void setData_kontsulta(LocalDate data_kontsulta) {
-        this.data_kontsulta = data_kontsulta;
+    public void setEkintza(String ekintza) {
+        this.ekintza = ekintza;
     }
 
-    public String getEgoera() {
-        return egoera;
+    public Date getData_aldaketa() {
+        return data_aldaketa;
     }
 
-    public void setEgoera(String egoera) {
-        this.egoera = egoera;
+    public void setData_aldaketa(Date data_aldaketa) {
+        this.data_aldaketa = data_aldaketa;
     }
 
-    public String getId_erab() {
-        return id_erab;
+    public String getOharra() {
+        return oharra;
     }
 
-    public void setId_erab(String id_erab) {
-        this.id_erab = id_erab;
+    public void setOharra(String oharra) {
+        this.oharra = oharra;
     }
 
 }
     
-

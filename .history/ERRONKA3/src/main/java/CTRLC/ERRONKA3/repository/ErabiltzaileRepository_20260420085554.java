@@ -16,9 +16,11 @@ public interface ErabiltzaileRepository extends JpaRepository<erabiltzailea, Str
     @Query("SELECT u FROM erabiltzailea u WHERE u.erabiltzaile_mota = :mota")
     Optional<erabiltzailea> findFirstByMota(@Param("mota") String mota);
 
-    @Query("SELECT u FROM erabiltzailea u WHERE LOWER(u.helbide_elektronikoa) = LOWER(:email) AND u.pasahitza = :pass")
-    Optional<erabiltzailea> findByEmailAndPassword(@Param("email") String email,
-                                                   @Param("pass") String pasahitza);
+        @Query("SELECT u FROM erabiltzailea u " +
+            "WHERE (u.id_erab = :credential OR LOWER(u.helbide_elektronikoa) = LOWER(:credential)) " +
+            "AND u.pasahitza = :pass")
+        Optional<erabiltzailea> findByCredentialAndPassword(@Param("credential") String credential,
+                                    @Param("pass") String pasahitza);
 
     Optional<erabiltzailea> findById(String id_erab);
 
