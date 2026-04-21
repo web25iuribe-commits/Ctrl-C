@@ -65,9 +65,6 @@ public class ErabiltzaileaController {
         } catch (DataIntegrityViolationException ex) {
             redirectAttributes.addFlashAttribute("error", "Ezin izan da erabiltzailea gorde: datuak ez dira baliodunak edo errepikatuak dira.");
             return "redirect:/admin";
-        } catch (RuntimeException ex) {
-            redirectAttributes.addFlashAttribute("error", "Ezin izan da erabiltzailea gorde. Saiatu berriro datuak egiaztatuta.");
-            return "redirect:/admin";
         }
 
         historikoaService.logAction("erabiltzailea", "INSERT", "Erabiltzailea sortu: " + id_erab);
@@ -113,9 +110,6 @@ public class ErabiltzaileaController {
         } catch (DataIntegrityViolationException ex) {
             redirectAttributes.addFlashAttribute("error", "Ezin izan da erabiltzailea eguneratu: datuak ez dira baliodunak edo errepikatuak dira.");
             return "redirect:/admin";
-        } catch (RuntimeException ex) {
-            redirectAttributes.addFlashAttribute("error", "Ezin izan da erabiltzailea eguneratu. Saiatu berriro datuak egiaztatuta.");
-            return "redirect:/admin";
         }
 
         historikoaService.logAction("erabiltzailea", "UPDATE", "Erabiltzailea aldatu: " + id_erab);
@@ -135,9 +129,6 @@ public class ErabiltzaileaController {
             erabiltzaileRepository.deleteById(id_erab);
         } catch (DataIntegrityViolationException ex) {
             redirectAttributes.addFlashAttribute("error", "Ezin izan da erabiltzailea ezabatu: beste erregistro batzuekin lotuta dago.");
-            return "redirect:/admin";
-        } catch (RuntimeException ex) {
-            redirectAttributes.addFlashAttribute("error", "Ezin izan da erabiltzailea ezabatu. Saiatu berriro.");
             return "redirect:/admin";
         }
 
