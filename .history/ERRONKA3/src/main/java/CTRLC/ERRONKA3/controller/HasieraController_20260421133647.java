@@ -58,8 +58,12 @@ public class HasieraController {
 
         boolean userIsAdmin = isAdminRole(user.getErabiltzaile_mota());
         boolean selectedAdmin = "admin".equals(selectedRole);
-        if (userIsAdmin != selectedAdmin) {
-            redirectAttributes.addFlashAttribute("error", "Hautatutako sarbide mota ez dator bat. Egiaztatu aukera eta saiatu berriro.");
+        if (userIsAdmin && !selectedAdmin) {
+            redirectAttributes.addFlashAttribute("error", "Administratzailea zara. Mesedez, hautatu 'Administratzailea' aukera.");
+            return "redirect:/login";
+        }
+        if (!userIsAdmin && selectedAdmin) {
+            redirectAttributes.addFlashAttribute("error", "Erabiltzaile arrunta zara. Mesedez, hautatu 'Erabiltzailea' aukera.");
             return "redirect:/login";
         }
 
