@@ -46,13 +46,13 @@ public class HasieraController {
         String password = pasahitza == null ? "" : pasahitza.trim();
 
         if (emaila.isEmpty() || password.isEmpty()) {
-            redirectAttributes.addFlashAttribute("error", "Emaila edo Pasahitza ez da zuzena.");
+            redirectAttributes.addFlashAttribute("error", "Emaila edo Pasahitza ez dira zuzenak.");
             return "redirect:/login";
         }
 
         erabiltzailea user = erabiltzaileRepository.findByEmailAndPassword(emaila, password).orElse(null);
         if (user == null) {
-            redirectAttributes.addFlashAttribute("error", "Emaila edo Pasahitza ez da zuzena.");
+            redirectAttributes.addFlashAttribute("error", "Emaila edo Pasahitza ez dira zuzenak.");
             return "redirect:/login";
         }
 

@@ -52,7 +52,7 @@ public class HasieraController {
 
         erabiltzailea user = erabiltzaileRepository.findByEmailAndPassword(emaila, password).orElse(null);
         if (user == null) {
-            redirectAttributes.addFlashAttribute("error", "Emaila edo Pasahitza ez da zuzena.");
+            redirectAttributes.addFlashAttribute("error", "Emaila edo Pasahitza ez daa zuzena.");
             return "redirect:/login";
         }
 
