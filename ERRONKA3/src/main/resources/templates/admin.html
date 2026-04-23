@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="eu">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin Editorea</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
+</head>
+<body class="bg-dark text-white">
+
+  <nav class="navbar bg-dark border-bottom border-secondary px-4 py-2">
+    <span class="navbar-brand text-white fw-bold fs-4">Admin Editorea</span>
+    <div class="d-flex align-items-center gap-2">
+      <span class="text-secondary me-2">admin</span>
+      <a href="historikoa.html" class="btn btn-outline-secondary btn-sm">Historia</a>
+      <button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#irtenModal">Irten</button>
+    </div>
+  </nav>
+
+  <div class="container-fluid py-4 px-4">
+
+    <div class="card bg-secondary-subtle border border-secondary mb-4">
+      <div class="card-body">
+        <h5 class="card-title text-white mb-3">Erabiltzailea</h5>
+        <div class="input-group mb-3">
+          <input id="bilatu-erabiltzailea" type="text" class="form-control bg-dark text-white border-secondary" placeholder="Erabiltzaile izena edo ID-a sartu"/>
+          <button class="btn btn-primary" onclick="bilatuErabiltzailea()">Bilatu</button>
+          <button class="btn btn-outline-secondary" onclick="garbituBilaketaErabiltzailea()">X</button>
+        </div>
+        <div class="table-responsive">
+          <table id="erabiltzaileTabla" class="table table-dark table-bordered table-hover align-middle">
+            <thead class="table-secondary">
+              <tr><th>Id</th><th>Izena</th><th>Abizena</th><th>Emaila</th><th>Mota</th><th>Ekintzak</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>1</td><td>Ane</td><td>Etxeberria</td><td>ane@email.com</td>
+                <td><span class="badge bg-danger">Admin</span></td>
+                <td class="d-flex gap-2">
+                  <button class="btn btn-danger btn-sm" onclick="ezabatuErabiltzailea(this)">Ezabatu</button>
+                  <button class="btn btn-warning btn-sm text-dark" onclick="aldatuErabiltzaileaIreki(this)">Aldatu</button>
+                </td>
+              </tr>
+              <tr>
+                <td>2</td><td>Mikel</td><td>Zubiaurre</td><td>mikel@email.com</td>
+                <td><span class="badge bg-primary">Erabiltzailea</span></td>
+                <td class="d-flex gap-2">
+                  <button class="btn btn-danger btn-sm" onclick="ezabatuErabiltzailea(this)">Ezabatu</button>
+                  <button class="btn btn-warning btn-sm text-dark" onclick="aldatuErabiltzaileaIreki(this)">Aldatu</button>
+                </td>
+              </tr>
+              <tr>
+                <td>3</td><td>Leire</td><td>Aizpurua</td><td>leire@email.com</td>
+                <td><span class="badge bg-primary">Erabiltzailea</span></td>
+                <td class="d-flex gap-2">
+                  <button class="btn btn-danger btn-sm" onclick="ezabatuErabiltzailea(this)">Ezabatu</button>
+                  <button class="btn btn-warning btn-sm text-dark" onclick="aldatuErabiltzaileaIreki(this)">Aldatu</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <button class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#sortuErabiltzaileModal">Sortu erabiltzailea</button>
+      </div>
+    </div>
+
+    <div class="card bg-secondary-subtle border border-secondary mb-4">
+      <div class="card-body">
+        <h5 class="card-title text-white mb-3">Eraikina</h5>
+        <div class="input-group mb-3">
+          <input id="bilatu-eraikina" type="text" class="form-control bg-dark text-white border-secondary" placeholder="Eraikina izena edo ID-a sartu"/>
+          <button class="btn btn-primary" onclick="bilatuEraikina()">Bilatu</button>
+          <button class="btn btn-outline-secondary" onclick="garbituBilaketaEraikina()">X</button>
+        </div>
+        <div class="table-responsive">
+          <table id="eraikinaTabla" class="table table-dark table-bordered table-hover align-middle">
+            <thead class="table-secondary">
+              <tr><th>Id</th><th>Izena</th><th>Helbidea</th><th>Hiria</th><th>Posta Kodea</th><th>Ekintzak</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>1</td><td>A Eraikina</td><td>Kale Nagusia 1</td><td>Donostia</td><td>20001</td>
+                <td class="d-flex gap-2">
+                  <button class="btn btn-danger btn-sm" onclick="ezabatuEraikina(this)">Ezabatu</button>
+                  <button class="btn btn-warning btn-sm text-dark" onclick="aldatuEraikinaIreki(this)">Aldatu</button>
+                </td>
+              </tr>
+              <tr>
+                <td>2</td><td>B Eraikina</td><td>Askatasun Etorbidea 5</td><td>Bilbo</td><td>48001</td>
+                <td class="d-flex gap-2">
+                  <button class="btn btn-danger btn-sm" onclick="ezabatuEraikina(this)">Ezabatu</button>
+                  <button class="btn btn-warning btn-sm text-dark" onclick="aldatuEraikinaIreki(this)">Aldatu</button>
+                </td>
+              </tr>
+              <tr>
+                <td>3</td><td>C Eraikina</td><td>Udaletxe Plaza 3</td><td>Gasteiz</td><td>01001</td>
+                <td class="d-flex gap-2">
+                  <button class="btn btn-danger btn-sm" onclick="ezabatuEraikina(this)">Ezabatu</button>
+                  <button class="btn btn-warning btn-sm text-dark" onclick="aldatuEraikinaIreki(this)">Aldatu</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <button class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#sortuEraikinaModal">Sortu Eraikina</button>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="modal fade" id="ezabatuErabiltzaileModal" tabindex="-1" aria-modal="true" role="dialog">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content bg-dark border border-secondary text-white">
+        <div class="modal-header border-secondary">
+          <h5 class="modal-title">Ezabatu erabiltzailea</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">Ziur zaude erabiltzaile hau ezabatu nahi duzula?</div>
+        <div class="modal-footer border-secondary">
+          <button class="btn btn-secondary" data-bs-dismiss="modal">Utzi</button>
+          <button class="btn btn-danger" onclick="ezabatuErabiltzaileaBaieztatu()">Ezabatu</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="ezabatuEraikinaModal" tabindex="-1" aria-modal="true" role="dialog">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content bg-dark border border-secondary text-white">
+        <div class="modal-header border-secondary">
+          <h5 class="modal-title">Ezabatu eraikina</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">Ziur zaude eraikina hau ezabatu nahi duzula?</div>
+        <div class="modal-footer border-secondary">
+          <button class="btn btn-secondary" data-bs-dismiss="modal">Utzi</button>
+          <button class="btn btn-danger" onclick="ezabatuEraikinaBaieztatu()">Ezabatu</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="sortuErabiltzaileModal" tabindex="-1" aria-modal="true" role="dialog">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content bg-dark border border-secondary text-white">
+        <div class="modal-header border-secondary">
+          <h5 class="modal-title">Sortu erabiltzailea</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <div class="mb-3">
+            <label class="form-label text-secondary small text-uppercase">Izena</label>
+            <input id="sortu-izena" type="text" class="form-control bg-dark text-white border-secondary" placeholder="Izena"/>
+          </div>
+          <div class="mb-3">
+            <label class="form-label text-secondary small text-uppercase">Abizena</label>
+            <input id="sortu-abizena" type="text" class="form-control bg-dark text-white border-secondary" placeholder="Abizena"/>
+          </div>
+          <div class="mb-3">
+            <label class="form-label text-secondary small text-uppercase">Emaila</label>
+            <input id="sortu-emaila" type="email" class="form-control bg-dark text-white border-secondary" placeholder="emaila@adibidea.com"/>
+          </div>
+          <div class="mb-3">
+            <label class="form-label text-secondary small text-uppercase">Pasahitza</label>
+            <input id="sortu-pasahitza" type="password" class="form-control bg-dark text-white border-secondary" placeholder="••••••••"/>
+          </div>
+          <div class="mb-3">
+            <label class="form-label text-secondary small text-uppercase">Mota</label>
+            <select id="sortu-mota" class="form-select bg-dark text-white border-secondary">
+              <option>Erabiltzailea</option>
+              <option>Admin</option>
+            </select>
+          </div>
+        </div>
+        <div class="modal-footer border-secondary">
+          <button class="btn btn-secondary" data-bs-dismiss="modal">Utzi</button>
+          <button class="btn btn-success" onclick="sortuErabiltzailea()">Sortu</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="aldatuErabiltzaileModal" tabindex="-1" aria-modal="true" role="dialog">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content bg-dark border border-secondary text-white">
+        <div class="modal-header border-secondary">
+          <h5 class="modal-title">Aldatu erabiltzailea</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <div class="mb-3">
+            <label class="form-label text-secondary small text-uppercase">Izena</label>
+            <input id="aldatu-izena" type="text" class="form-control bg-dark text-white border-secondary"/>
+          </div>
+          <div class="mb-3">
+            <label class="form-label text-secondary small text-uppercase">Abizena</label>
+            <input id="aldatu-abizena" type="text" class="form-control bg-dark text-white border-secondary"/>
+          </div>
+          <div class="mb-3">
+            <label class="form-label text-secondary small text-uppercase">Emaila</label>
+            <input id="aldatu-emaila" type="email" class="form-control bg-dark text-white border-secondary"/>
+          </div>
+          <div class="mb-3">
+            <label class="form-label text-secondary small text-uppercase">Mota</label>
+            <select id="aldatu-mota" class="form-select bg-dark text-white border-secondary">
+              <option>Erabiltzailea</option>
+              <option>Admin</option>
+            </select>
+          </div>
+        </div>
+        <div class="modal-footer border-secondary">
+          <button class="btn btn-secondary" data-bs-dismiss="modal">Utzi</button>
+          <button class="btn btn-warning text-dark" onclick="aldatuErabiltzaileaGorde()">Aldatu</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="sortuEraikinaModal" tabindex="-1" aria-modal="true" role="dialog">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content bg-dark border border-secondary text-white">
+        <div class="modal-header border-secondary">
+          <h5 class="modal-title">Sortu Eraikina</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <div class="mb-3">
+            <label class="form-label text-secondary small text-uppercase">Izena</label>
+            <input id="eraikina-izena" type="text" class="form-control bg-dark text-white border-secondary" placeholder="Eraikina izena"/>
+          </div>
+          <div class="mb-3">
+            <label class="form-label text-secondary small text-uppercase">Helbidea</label>
+            <input id="eraikina-helbidea" type="text" class="form-control bg-dark text-white border-secondary" placeholder="Helbidea"/>
+          </div>
+          <div class="mb-3">
+            <label class="form-label text-secondary small text-uppercase">Hiria</label>
+            <input id="eraikina-hiria" type="text" class="form-control bg-dark text-white border-secondary" placeholder="Hiria"/>
+          </div>
+          <div class="mb-3">
+            <label class="form-label text-secondary small text-uppercase">Posta Kodea</label>
+            <input id="eraikina-posta" type="text" class="form-control bg-dark text-white border-secondary" placeholder="00000"/>
+          </div>
+        </div>
+        <div class="modal-footer border-secondary">
+          <button class="btn btn-secondary" data-bs-dismiss="modal">Utzi</button>
+          <button class="btn btn-success" onclick="sortuEraikina()">Sortu</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="aldatuEraikinaModal" tabindex="-1" aria-modal="true" role="dialog">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content bg-dark border border-secondary text-white">
+        <div class="modal-header border-secondary">
+          <h5 class="modal-title">Aldatu Eraikina</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <div class="mb-3">
+            <label class="form-label text-secondary small text-uppercase">Izena</label>
+            <input id="aldatu-eraikina-izena" type="text" class="form-control bg-dark text-white border-secondary"/>
+          </div>
+          <div class="mb-3">
+            <label class="form-label text-secondary small text-uppercase">Helbidea</label>
+            <input id="aldatu-eraikina-helbidea" type="text" class="form-control bg-dark text-white border-secondary"/>
+          </div>
+          <div class="mb-3">
+            <label class="form-label text-secondary small text-uppercase">Hiria</label>
+            <input id="aldatu-eraikina-hiria" type="text" class="form-control bg-dark text-white border-secondary"/>
+          </div>
+          <div class="mb-3">
+            <label class="form-label text-secondary small text-uppercase">Posta Kodea</label>
+            <input id="aldatu-eraikina-posta" type="text" class="form-control bg-dark text-white border-secondary"/>
+          </div>
+        </div>
+        <div class="modal-footer border-secondary">
+          <button class="btn btn-secondary" data-bs-dismiss="modal">Utzi</button>
+          <button class="btn btn-warning text-dark" onclick="aldatuEraikinaGorde()">Aldatu</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="irtenModal" tabindex="-1" aria-modal="true" role="dialog">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content bg-dark border border-secondary text-white">
+        <div class="modal-header border-secondary">
+          <h5 class="modal-title">Saioa itxi</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">Ziur zaude saioa itxi nahi duzula?</div>
+        <div class="modal-footer border-secondary">
+          <button class="btn btn-secondary" data-bs-dismiss="modal">Utzi</button>
+          <button class="btn btn-danger" data-bs-dismiss="modal">Irten</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    let erabiltzaileId = 4;
+    let eraikinaId = 4;
+    let ezabatuErabiltzaileRow = null;
+    let ezabatuEraikinaRow = null;
+    let aldatuErabiltzaileRow = null;
+    let aldatuEraikinaRow = null;
+
+
+    function bilatuErabiltzailea() {
+      const bilaketa = document.getElementById('bilatu-erabiltzailea').value.trim().toLowerCase();
+      const rows = document.querySelectorAll('#erabiltzaileTabla tbody tr');
+      rows.forEach(tr => {
+        const testua = tr.textContent.toLowerCase();
+        tr.style.display = testua.includes(bilaketa) ? '' : 'none';
+      });
+    }
+
+    function garbituBilaketaErabiltzailea() {
+      document.getElementById('bilatu-erabiltzailea').value = '';
+      document.querySelectorAll('#erabiltzaileTabla tbody tr').forEach(tr => tr.style.display = '');
+    }
+
+    function bilatuEraikina() {
+      const bilaketa = document.getElementById('bilatu-eraikina').value.trim().toLowerCase();
+      const rows = document.querySelectorAll('#eraikinaTabla tbody tr');
+      rows.forEach(tr => {
+        const testua = tr.textContent.toLowerCase();
+        tr.style.display = testua.includes(bilaketa) ? '' : 'none';
+      });
+    }
+
+    function garbituBilaketaEraikina() {
+      document.getElementById('bilatu-eraikina').value = '';
+      document.querySelectorAll('#eraikinaTabla tbody tr').forEach(tr => tr.style.display = '');
+    }
+
+
+    function sortuErabiltzailea() {
+      const izena   = document.getElementById('sortu-izena').value.trim();
+      const abizena = document.getElementById('sortu-abizena').value.trim();
+      const emaila  = document.getElementById('sortu-emaila').value.trim();
+      const mota    = document.getElementById('sortu-mota').value;
+      if (!izena || !abizena || !emaila) return;
+
+      const badgeKlase = mota === 'Admin' ? 'bg-danger' : 'bg-primary';
+      const tbody = document.querySelector('#erabiltzaileTabla tbody');
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td>${erabiltzaileId++}</td>
+        <td>${izena}</td><td>${abizena}</td><td>${emaila}</td>
+        <td><span class="badge ${badgeKlase}">${mota}</span></td>
+        <td class="d-flex gap-2">
+          <button class="btn btn-danger btn-sm" onclick="ezabatuErabiltzailea(this)">Ezabatu</button>
+          <button class="btn btn-warning btn-sm text-dark" onclick="aldatuErabiltzaileaIreki(this)">Aldatu</button>
+        </td>`;
+      tbody.appendChild(tr);
+
+      document.getElementById('sortu-izena').value = '';
+      document.getElementById('sortu-abizena').value = '';
+      document.getElementById('sortu-emaila').value = '';
+      document.getElementById('sortu-pasahitza').value = '';
+      document.getElementById('sortu-mota').selectedIndex = 0;
+      bootstrap.Modal.getInstance(document.getElementById('sortuErabiltzaileModal')).hide();
+    }
+
+    function ezabatuErabiltzailea(btn) {
+      ezabatuErabiltzaileRow = btn.closest('tr');
+      new bootstrap.Modal(document.getElementById('ezabatuErabiltzaileModal')).show();
+    }
+
+    function ezabatuErabiltzaileaBaieztatu() {
+      if (ezabatuErabiltzaileRow) { ezabatuErabiltzaileRow.remove(); ezabatuErabiltzaileRow = null; }
+      bootstrap.Modal.getInstance(document.getElementById('ezabatuErabiltzaileModal')).hide();
+    }
+
+    function aldatuErabiltzaileaIreki(btn) {
+      aldatuErabiltzaileRow = btn.closest('tr');
+      const cells = aldatuErabiltzaileRow.querySelectorAll('td');
+      document.getElementById('aldatu-izena').value   = cells[1].textContent;
+      document.getElementById('aldatu-abizena').value = cells[2].textContent;
+      document.getElementById('aldatu-emaila').value  = cells[3].textContent;
+      document.getElementById('aldatu-mota').value    = cells[4].querySelector('span').textContent;
+      new bootstrap.Modal(document.getElementById('aldatuErabiltzaileModal')).show();
+    }
+
+    function aldatuErabiltzaileaGorde() {
+      if (!aldatuErabiltzaileRow) return;
+      const izena   = document.getElementById('aldatu-izena').value.trim();
+      const abizena = document.getElementById('aldatu-abizena').value.trim();
+      const emaila  = document.getElementById('aldatu-emaila').value.trim();
+      const mota    = document.getElementById('aldatu-mota').value;
+      if (!izena || !abizena || !emaila) return;
+
+      const cells = aldatuErabiltzaileRow.querySelectorAll('td');
+      cells[1].textContent = izena;
+      cells[2].textContent = abizena;
+      cells[3].textContent = emaila;
+      cells[4].innerHTML = `<span class="badge ${mota === 'Admin' ? 'bg-danger' : 'bg-primary'}">${mota}</span>`;
+
+      aldatuErabiltzaileRow = null;
+      bootstrap.Modal.getInstance(document.getElementById('aldatuErabiltzaileModal')).hide();
+    }
+
+
+    function sortuEraikina() {
+      const izena    = document.getElementById('eraikina-izena').value.trim();
+      const helbidea = document.getElementById('eraikina-helbidea').value.trim();
+      const hiria    = document.getElementById('eraikina-hiria').value.trim();
+      const posta    = document.getElementById('eraikina-posta').value.trim();
+      if (!izena || !helbidea || !hiria || !posta) return;
+
+      const tbody = document.querySelector('#eraikinaTabla tbody');
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td>${eraikinaId++}</td>
+        <td>${izena}</td><td>${helbidea}</td><td>${hiria}</td><td>${posta}</td>
+        <td class="d-flex gap-2">
+          <button class="btn btn-danger btn-sm" onclick="ezabatuEraikina(this)">Ezabatu</button>
+          <button class="btn btn-warning btn-sm text-dark" onclick="aldatuEraikinaIreki(this)">Aldatu</button>
+        </td>`;
+      tbody.appendChild(tr);
+
+      document.getElementById('eraikina-izena').value = '';
+      document.getElementById('eraikina-helbidea').value = '';
+      document.getElementById('eraikina-hiria').value = '';
+      document.getElementById('eraikina-posta').value = '';
+      bootstrap.Modal.getInstance(document.getElementById('sortuEraikinaModal')).hide();
+    }
+
+    function ezabatuEraikina(btn) {
+      ezabatuEraikinaRow = btn.closest('tr');
+      new bootstrap.Modal(document.getElementById('ezabatuEraikinaModal')).show();
+    }
+
+    function ezabatuEraikinaBaieztatu() {
+      if (ezabatuEraikinaRow) { ezabatuEraikinaRow.remove(); ezabatuEraikinaRow = null; }
+      bootstrap.Modal.getInstance(document.getElementById('ezabatuEraikinaModal')).hide();
+    }
+
+    function aldatuEraikinaIreki(btn) {
+      aldatuEraikinaRow = btn.closest('tr');
+      const cells = aldatuEraikinaRow.querySelectorAll('td');
+      document.getElementById('aldatu-eraikina-izena').value    = cells[1].textContent;
+      document.getElementById('aldatu-eraikina-helbidea').value = cells[2].textContent;
+      document.getElementById('aldatu-eraikina-hiria').value    = cells[3].textContent;
+      document.getElementById('aldatu-eraikina-posta').value    = cells[4].textContent;
+      new bootstrap.Modal(document.getElementById('aldatuEraikinaModal')).show();
+    }
+
+    function aldatuEraikinaGorde() {
+      if (!aldatuEraikinaRow) return;
+      const izena    = document.getElementById('aldatu-eraikina-izena').value.trim();
+      const helbidea = document.getElementById('aldatu-eraikina-helbidea').value.trim();
+      const hiria    = document.getElementById('aldatu-eraikina-hiria').value.trim();
+      const posta    = document.getElementById('aldatu-eraikina-posta').value.trim();
+      if (!izena || !helbidea || !hiria || !posta) return;
+
+      const cells = aldatuEraikinaRow.querySelectorAll('td');
+      cells[1].textContent = izena;
+      cells[2].textContent = helbidea;
+      cells[3].textContent = hiria;
+      cells[4].textContent = posta;
+
+      aldatuEraikinaRow = null;
+      bootstrap.Modal.getInstance(document.getElementById('aldatuEraikinaModal')).hide();
+    }
+  </script>
+</body>
+</html>
