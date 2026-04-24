@@ -1,0 +1,39 @@
+header {
+    background-color: #1c398e;
+    padding: 20px;
+    width: auto;
+    color: rgba(249, 254, 255, 0.751);
+    height: 130px;
+
+}
+
+
+body {
+    text-align: center;
+    background-color: rgba(249, 250, 251);
+
+
+}
+
+footer {
+    background-color: rgba(90, 128, 237);
+    padding: 20px;
+    text-align: center;
+    color: rgb(255, 255, 255);
+
+}
+
+.bg-success {
+    --bs-bg-opacity: 1;
+    background-color: rgba(var(--bs-success-rgb), var(--bs-bg-opacity)) !important;
+}
+
+.bg-primary {
+    --bs-bg-opacity: 1;
+    background-color: rgba(var(--bs-primary-rgb), var(--bs-bg-opacity)) !important;
+}
+
+button {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
