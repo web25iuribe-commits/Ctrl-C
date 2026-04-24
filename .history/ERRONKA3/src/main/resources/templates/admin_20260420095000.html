@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin - Kontsultak eta Kudeaketa</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-4">
+    <div class="container">
+        <a class="navbar-brand" href="#">Miguel Altuna Inbentarioa - Admin</a>
+        <div class="d-flex align-items-center">
+            <span class="text-white me-3" th:text="${currentUser.izena} + ' (' + role + ')'">Erabiltzailea</span>
+            <a class="btn btn-outline-light btn-sm me-2" th:href="@{/admin/historikoa}">Historikoa</a>
+            <a class="btn btn-outline-light btn-sm" th:href="@{/logout}">Irten</a>
+        </div>
+    </div>
+</nav>
+<div class="container">
+    <div class="p-4 mb-4 bg-white rounded shadow-sm">
+        <h1 class="h3">Admin - Kontsultak eta Kudeaketa</h1>
+        <p class="text-muted">Administratzaileak datu-basea kudeatu dezake.</p>
+    </div>
+
+    <div class="row gy-4">
+        <div class="col-md-6">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">Erabiltzaileak</h5>
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead class="table-dark">
+                            <tr>
+                                <th>ID</th>
+                                <th>Izena</th>
+                                <th>Abizena</th>
+                                <th>Emaila</th>
+                                <th>Mota</th>
+                                <th>Akzioak</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="erab : ${erabiltzaileak}">
+                                <td th:text="${erab.id_erab}">U001</td>
+                                <td th:text="${erab.izena}">Jon</td>
+                                <td th:text="${erab.abizena != null ? erab.abizena : ''}">Perez</td>
+                                <td th:text="${erab.helbide_elektronikoa}">jon@example.com</td>
+                                <td th:text="${erab.erabiltzaile_mota}">usuario</td>
+                                <td>
+                                    <form th:action="@{/admin/erabiltzailea/delete}" method="post" class="d-inline">
+                                        <input type="hidden" name="id_erab" th:value="${erab.id_erab}">
+                                        <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Ziur zaude erabiltzailea hau ezabatu nahi duzula?')">Ezabatu</button>
+                                    </form>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <button class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#addErabiltzaileaModal">Erabiltzailea Gehitu</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">Eraikinak</h5>
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead class="table-dark">
+                            <tr>
+                                <th>ID</th>
+                                <th>Izena</th>
+                                <th>Helbidea</th>
+                                <th>Hiria</th>
+                                <th>Posta kodea</th>
+                                <th>Akzioak</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="era : ${eraikinak}">
+                                <td th:text="${era.id_eraikina}">E001</td>
+                                <td th:text="${era.izena}">Eraikina</td>
+                                <td th:text="${era.helbidea}">Helbidea</td>
+                                <td th:text="${era.hiria}">Hiria</td>
+                                <td th:text="${era.posta_kodea}">01010</td>
+                                <td>
+                                    <form th:action="@{/admin/eraikina/delete}" method="post" class="d-inline">
+                                        <input type="hidden" name="id_eraikina" th:value="${era.id_eraikina}">
+                                        <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Ziur zaude eraikina hau ezabatu nahi duzula?')">Ezabatu</button>
+                                    </form>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <button class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#addEraikinaModal">Eraikina Gehitu</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row gy-4 mt-4">
+        <div class="col-md-4">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">Gelak</h5>
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead class="table-dark">
+                            <tr>
+                                <th>Gela zenbakia</th>
+                                <th>Solairua</th>
+                                <th>Akzioak</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="g : ${gelak}">
+                                <td th:text="${g.gela_zenb}">101</td>
+                                <td th:text="${g.id_solairua}">S1</td>
+                                <td>
+                                    <form th:action="@{/admin/gela/delete}" method="post" class="d-inline">
+                                        <input type="hidden" name="gela_zenb" th:value="${g.gela_zenb}">
+                                        <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Ziur zaude gela hau ezabatu nahi duzula?')">Ezabatu</button>
+                                    </form>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <button class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#addGelaModal">Gela Gehitu</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">Gailuak</h5>
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead class="table-dark">
+                            <tr>
+                                <th>ID</th>
+                                <th>Marka</th>
+                                <th>Modeloa</th>
+                                <th>Serie</th>
+                                <th>Gela</th>
+                                <th>Akzioak</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="g : ${gailuak}">
+                                <td th:text="${g.id_gailua}">G001</td>
+                                <td th:text="${g.marka}">Dell</td>
+                                <td th:text="${g.modeloa}">XPS</td>
+                                <td th:text="${g.serie_zenb}">SN123</td>
+                                <td th:text="${g.gela_zenb}">101</td>
+                                <td>
+                                    <form th:action="@{/admin/gailua/delete}" method="post" class="d-inline">
+                                        <input type="hidden" name="id_gailua" th:value="${g.id_gailua}">
+                                        <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Ziur zaude gailua hau ezabatu nahi duzula?')">Ezabatu</button>
+                                    </form>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <button class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#addGailuaModal">Gailua Gehitu</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">Solairuak</h5>
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead class="table-dark">
+                            <tr>
+                                <th>ID</th>
+                                <th>Zenbakia</th>
+                                <th>Eraikina</th>
+                                <th>Akzioak</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="s : ${solairuak}">
+                                <td th:text="${s.id_solairua}">S1</td>
+                                <td th:text="${s.solairu_zenbakia}">1</td>
+                                <td th:text="${s.id_eraikina}">E001</td>
+                                <td>
+                                    <form th:action="@{/admin/solairua/delete}" method="post" class="d-inline">
+                                        <input type="hidden" name="id_solairua" th:value="${s.id_solairua}">
+                                        <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Ziur zaude solairua hau ezabatu nahi duzula?')">Ezabatu</button>
+                                    </form>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <button class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#addSolairuaModal">Solairua Gehitu</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modals for adding entities -->
+    <!-- Add Erabiltzailea Modal -->
+    <div class="modal fade" id="addErabiltzaileaModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form th:action="@{/admin/erabiltzailea/save}" method="post">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Erabiltzailea Gehitu</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label class="form-label">ID</label>
+                            <input type="text" class="form-control" name="id_erab" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">NAN</label>
+                            <input type="text" class="form-control" name="NAN" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Izena</label>
+                            <input type="text" class="form-control" name="izena" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Abizena</label>
+                            <input type="text" class="form-control" name="abizena" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Emaila</label>
+                            <input type="email" class="form-control" name="helbide_elektronikoa" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Pasahitza</label>
+                            <input type="password" class="form-control" name="pasahitza" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Mota</label>
+                            <select class="form-control" name="erabiltzaile_mota" required>
+                                <option value="usuario">Usuario</option>
+                                <option value="administrador">Administrador</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Itxi</button>
+                        <button type="submit" class="btn btn-primary">Gorde</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Eraikina Modal -->
+    <div class="modal fade" id="addEraikinaModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form th:action="@{/admin/eraikina/save}" method="post">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Eraikina Gehitu</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label class="form-label">ID</label>
+                            <input type="text" class="form-control" name="id_eraikina" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Izena</label>
+                            <input type="text" class="form-control" name="izena" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Helbidea</label>
+                            <input type="text" class="form-control" name="helbidea" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Hiria</label>
+                            <input type="text" class="form-control" name="hiria" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Posta Kodea</label>
+                            <input type="text" class="form-control" name="posta_kodea" required>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Itxi</button>
+                        <button type="submit" class="btn btn-primary">Gorde</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Gela Modal -->
+    <div class="modal fade" id="addGelaModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form th:action="@{/admin/gela/save}" method="post">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Gela Gehitu</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label class="form-label">Gela Zenbakia</label>
+                            <input type="text" class="form-control" name="gela_zenb" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Solairua ID</label>
+                            <input type="text" class="form-control" name="id_solairua" required>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Itxi</button>
+                        <button type="submit" class="btn btn-primary">Gorde</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Gailua Modal -->
+    <div class="modal fade" id="addGailuaModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form th:action="@{/admin/gailua/save}" method="post">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Gailua Gehitu</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label class="form-label">ID</label>
+                            <input type="text" class="form-control" name="id_gailua" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Marka</label>
+                            <input type="text" class="form-control" name="marka" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Modeloa</label>
+                            <input type="text" class="form-control" name="modeloa" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Serie Zenbakia</label>
+                            <input type="text" class="form-control" name="serie_zenb" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Neurriak</label>
+                            <input type="text" class="form-control" name="neurriak">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Gela Zenbakia</label>
+                            <input type="text" class="form-control" name="gela_zenb" required>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Itxi</button>
+                        <button type="submit" class="btn btn-primary">Gorde</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Solairua Modal -->
+    <div class="modal fade" id="addSolairuaModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form th:action="@{/admin/solairua/save}" method="post">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Solairua Gehitu</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label class="form-label">ID</label>
+                            <input type="text" class="form-control" name="id_solairua" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Solairu Zenbakia</label>
+                            <input type="number" class="form-control" name="solairu_zenbakia" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Eraikina ID</label>
+                            <input type="text" class="form-control" name="id_eraikina" required>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Itxi</button>
+                        <button type="submit" class="btn btn-primary">Gorde</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+function deleteEntity(entity, id) {
+    if (confirm('Ziur zaude ' + entity + ' hau ezabatu nahi duzula?')) {
+        const form = document.createElement('form');
+        form.method = 'post';
+        form.action = '/admin/' + entity + '/delete';
+        const input = document.createElement('input');
+        input.type = 'hidden';
+        input.name = entity === 'erabiltzailea' ? 'id_erab' : entity === 'eraikina' ? 'id_eraikina' : entity === 'gela' ? 'gela_zenb' : entity === 'gailua' ? 'id_gailua' : 'id_solairua';
+        input.value = id;
+        form.appendChild(input);
+        document.body.appendChild(form);
+        form.submit();
+    }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-Erronka3Application<ERRONKA3>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "CTRLC.ERRONKA3.Erronka3Application",
+            "projectName": "ERRONKA3",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}
