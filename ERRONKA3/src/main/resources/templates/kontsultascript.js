@@ -26,38 +26,3 @@ function bilatu() {
     window.location.href = "http://localhost:8080/bilatu?query=" + searchQuery;
 }
 
-function bilatu2() {
-    localStorage.setItem("searchQuery", document.querySelector('.form-control').value);
-    window.location.href = "./bilatu.html";
-    let searchQuery = localStorage.getItem("searchQuery");
-    console.log("Bilaketa kontsulta_admi.js-tik: " + searchQuery);
-    window.location.href = "http://localhost:8080/bilatu?query=" + searchQuery;
-}
-
-function bilatu3() {
-    localStorage.setItem('searchQuery', document.querySelector(`'.form-control'`).value);
-    window.localStorage.setItem("searchQuery", document.querySelector('.form-control').value);
-    window.location.href = "./bilatu.html";
-    let searchQuery = localStorage.getItem("searchQuery");
-    console.log("Bilaketa kontsulta_admi.js-tik: " + searchQuery);
-    window.location.href = "http://localhost:8080/bilatu?query=" + searchQuery;
-
-}
-
-function bilatu4() {
-    localStorage.setItem('searchQuery', document.querySelector(`'.form-control'`).value);
-    window.localStorage.setItem("searchQuery", document.querySelector('.form-control').value);
-    window.location.href = "./bilatu.html";
-    let searchQuery = localStorage.getItem("searchQuery");
-    console.log("Bilaketa kontsulta_admi.js-tik: " + searchQuery);
-    window.location.href = "http://localhost:8080/bilatu?query=" + searchQuery;
-}
-
-function bilatu5() {
-    localStorage.setItem('searchQuery', document.querySelector(`'.form-control'`).value);
-    window.localStorage.setItem("searchQuery", document.querySelector('.form-control').value);
-    window.location.href = "./bilatu.html";
-    let searchQuery = localStorage.getItem("searchQuery");
-    console.log("Bilaketa kontsulta_admi.js-tik: " + searchQuery);
-    window.location.href = "http://localhost:8080/bilatu?query=" + searchQuery;
-}
