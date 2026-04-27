@@ -7,19 +7,15 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import CTRLC.ERRONKA3.model.gela;
-import CTRLC.ERRONKA3.service.HistorikoaService;
 import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class GelaController {
 
     private final CTRLC.ERRONKA3.repository.GelaRepository gelaRepository;
-    private final HistorikoaService historikoaService;
 
-    public GelaController(CTRLC.ERRONKA3.repository.GelaRepository gelaRepository,
-                          HistorikoaService historikoaService) {
+    public GelaController(CTRLC.ERRONKA3.repository.GelaRepository gelaRepository) {
         this.gelaRepository = gelaRepository;
-        this.historikoaService = historikoaService;
     }
 
     @PostMapping("/admin/gela/save")
@@ -28,13 +24,13 @@ public class GelaController {
                            HttpSession session,
                            RedirectAttributes redirectAttributes) {
         if (!isAdmin(session)) {
-            return "redirect:/admin?accessDenied=true";
+            return "redirect:/admin/editatu?accessDenied=true";
         }
 
         String validationError = validateGelaInput(gela_zenb, id_solairua);
         if (validationError != null) {
             redirectAttributes.addFlashAttribute("error", validationError);
-            return "redirect:/admin";
+            return "redirect:/admin/editatu";
         }
 
         try {
@@ -44,15 +40,14 @@ public class GelaController {
             gelaRepository.save(gela);
         } catch (DataIntegrityViolationException ex) {
             redirectAttributes.addFlashAttribute("error", "Ezin izan da gela gorde: datuak ez dira baliodunak edo lotura okerrak daude.");
-            return "redirect:/admin";
+            return "redirect:/admin/editatu";
         } catch (RuntimeException ex) {
             redirectAttributes.addFlashAttribute("error", "Ezin izan da gela gorde. Saiatu berriro datuak egiaztatuta.");
-            return "redirect:/admin";
+            return "redirect:/admin/editatu";
         }
 
-        historikoaService.logAction("gela", "INSERT", "Gela sortu: " + gela_zenb);
         redirectAttributes.addFlashAttribute("success", "Gela ondo sortu da.");
-        return "redirect:/admin";
+        return "redirect:/admin/editatu";
     }
 
     @PostMapping("/admin/gela/update")
@@ -61,13 +56,13 @@ public class GelaController {
                              HttpSession session,
                              RedirectAttributes redirectAttributes) {
         if (!isAdmin(session)) {
-            return "redirect:/admin?accessDenied=true";
+            return "redirect:/admin/editatu?accessDenied=true";
         }
 
         String validationError = validateGelaInput(gela_zenb, id_solairua);
         if (validationError != null) {
             redirectAttributes.addFlashAttribute("error", validationError);
-            return "redirect:/admin";
+            return "redirect:/admin/editatu";
         }
 
         try {
@@ -77,15 +72,14 @@ public class GelaController {
             gelaRepository.save(gela);
         } catch (DataIntegrityViolationException ex) {
             redirectAttributes.addFlashAttribute("error", "Ezin izan da gela eguneratu: datuak ez dira baliodunak edo lotura okerrak daude.");
-            return "redirect:/admin";
+            return "redirect:/admin/editatu";
         } catch (RuntimeException ex) {
             redirectAttributes.addFlashAttribute("error", "Ezin izan da gela eguneratu. Saiatu berriro datuak egiaztatuta.");
-            return "redirect:/admin";
+            return "redirect:/admin/editatu";
         }
 
-        historikoaService.logAction("gela", "UPDATE", "Gela aldatu: " + gela_zenb);
         redirectAttributes.addFlashAttribute("success", "Gela ondo eguneratu da.");
-        return "redirect:/admin";
+        return "redirect:/admin/editatu";
     }
 
     @PostMapping("/admin/gela/delete")
@@ -93,27 +87,26 @@ public class GelaController {
                              HttpSession session,
                              RedirectAttributes redirectAttributes) {
         if (!isAdmin(session)) {
-            return "redirect:/admin?accessDenied=true";
+            return "redirect:/admin/editatu?accessDenied=true";
         }
 
         if (isBlank(gela_zenb)) {
             redirectAttributes.addFlashAttribute("error", "Gelaren IDa ezin da hutsik egon.");
-            return "redirect:/admin";
+            return "redirect:/admin/editatu";
         }
 
         try {
             gelaRepository.deleteById(gela_zenb.trim());
         } catch (DataIntegrityViolationException ex) {
             redirectAttributes.addFlashAttribute("error", "Ezin izan da gela ezabatu: beste erregistro batzuekin lotuta dago.");
-            return "redirect:/admin";
+            return "redirect:/admin/editatu";
         } catch (RuntimeException ex) {
             redirectAttributes.addFlashAttribute("error", "Ezin izan da gela ezabatu. Saiatu berriro.");
-            return "redirect:/admin";
+            return "redirect:/admin/editatu";
         }
 
-        historikoaService.logAction("gela", "DELETE", "Gela ezabatu: " + gela_zenb);
         redirectAttributes.addFlashAttribute("success", "Gela ondo ezabatu da.");
-        return "redirect:/admin";
+        return "redirect:/admin/editatu";
     }
 
     private String validateGelaInput(String gelaZenb, String idSolairua) {

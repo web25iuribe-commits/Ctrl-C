@@ -7,19 +7,15 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import CTRLC.ERRONKA3.model.gailua;
-import CTRLC.ERRONKA3.service.HistorikoaService;
 import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class GailuaController {
 
     private final CTRLC.ERRONKA3.repository.GailuaRepository gailuaRepository;
-    private final HistorikoaService historikoaService;
 
-    public GailuaController(CTRLC.ERRONKA3.repository.GailuaRepository gailuaRepository,
-                            HistorikoaService historikoaService) {
+    public GailuaController(CTRLC.ERRONKA3.repository.GailuaRepository gailuaRepository) {
         this.gailuaRepository = gailuaRepository;
-        this.historikoaService = historikoaService;
     }
 
     @PostMapping("/admin/gailua/save")
@@ -32,13 +28,13 @@ public class GailuaController {
                              HttpSession session,
                              RedirectAttributes redirectAttributes) {
         if (!isAdmin(session)) {
-            return "redirect:/admin?accessDenied=true";
+            return "redirect:/admin/editatu?accessDenied=true";
         }
 
         String validationError = validateGailuaInput(id_gailua, marka, modeloa, serie_zenb, gela_zenb);
         if (validationError != null) {
             redirectAttributes.addFlashAttribute("error", validationError);
-            return "redirect:/admin";
+            return "redirect:/admin/editatu";
         }
 
         try {
@@ -52,15 +48,14 @@ public class GailuaController {
             gailuaRepository.save(gailua);
         } catch (DataIntegrityViolationException ex) {
             redirectAttributes.addFlashAttribute("error", "Ezin izan da gailua gorde: datuak ez dira baliodunak edo lotura okerrak daude.");
-            return "redirect:/admin";
+            return "redirect:/admin/editatu";
         } catch (RuntimeException ex) {
             redirectAttributes.addFlashAttribute("error", "Ezin izan da gailua gorde. Saiatu berriro datuak egiaztatuta.");
-            return "redirect:/admin";
+            return "redirect:/admin/editatu";
         }
 
-        historikoaService.logAction("gailua", "INSERT", "Gailua sortu: " + id_gailua);
         redirectAttributes.addFlashAttribute("success", "Gailua ondo sortu da.");
-        return "redirect:/admin";
+        return "redirect:/admin/editatu";
     }
 
     @PostMapping("/admin/gailua/update")
@@ -73,13 +68,13 @@ public class GailuaController {
                                HttpSession session,
                                RedirectAttributes redirectAttributes) {
         if (!isAdmin(session)) {
-            return "redirect:/admin?accessDenied=true";
+            return "redirect:/admin/editatu?accessDenied=true";
         }
 
         String validationError = validateGailuaInput(id_gailua, marka, modeloa, serie_zenb, gela_zenb);
         if (validationError != null) {
             redirectAttributes.addFlashAttribute("error", validationError);
-            return "redirect:/admin";
+            return "redirect:/admin/editatu";
         }
 
         try {
@@ -93,15 +88,14 @@ public class GailuaController {
             gailuaRepository.save(gailua);
         } catch (DataIntegrityViolationException ex) {
             redirectAttributes.addFlashAttribute("error", "Ezin izan da gailua eguneratu: datuak ez dira baliodunak edo lotura okerrak daude.");
-            return "redirect:/admin";
+            return "redirect:/admin/editatu";
         } catch (RuntimeException ex) {
             redirectAttributes.addFlashAttribute("error", "Ezin izan da gailua eguneratu. Saiatu berriro datuak egiaztatuta.");
-            return "redirect:/admin";
+            return "redirect:/admin/editatu";
         }
 
-        historikoaService.logAction("gailua", "UPDATE", "Gailua aldatu: " + id_gailua);
         redirectAttributes.addFlashAttribute("success", "Gailua ondo eguneratu da.");
-        return "redirect:/admin";
+        return "redirect:/admin/editatu";
     }
 
     @PostMapping("/admin/gailua/delete")
@@ -109,27 +103,26 @@ public class GailuaController {
                                HttpSession session,
                                RedirectAttributes redirectAttributes) {
         if (!isAdmin(session)) {
-            return "redirect:/admin?accessDenied=true";
+            return "redirect:/admin/editatu?accessDenied=true";
         }
 
         if (isBlank(id_gailua)) {
             redirectAttributes.addFlashAttribute("error", "Gailuaren IDa ezin da hutsik egon.");
-            return "redirect:/admin";
+            return "redirect:/admin/editatu";
         }
 
         try {
             gailuaRepository.deleteById(id_gailua.trim());
         } catch (DataIntegrityViolationException ex) {
             redirectAttributes.addFlashAttribute("error", "Ezin izan da gailua ezabatu: beste erregistro batzuekin lotuta dago.");
-            return "redirect:/admin";
+            return "redirect:/admin/editatu";
         } catch (RuntimeException ex) {
             redirectAttributes.addFlashAttribute("error", "Ezin izan da gailua ezabatu. Saiatu berriro.");
-            return "redirect:/admin";
+            return "redirect:/admin/editatu";
         }
 
-        historikoaService.logAction("gailua", "DELETE", "Gailua ezabatu: " + id_gailua);
         redirectAttributes.addFlashAttribute("success", "Gailua ondo ezabatu da.");
-        return "redirect:/admin";
+        return "redirect:/admin/editatu";
     }
 
     private String validateGailuaInput(String idGailua,

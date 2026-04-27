@@ -1,17 +1,9 @@
 package CTRLC.ERRONKA3.controller;
 
-import java.util.List;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
-import CTRLC.ERRONKA3.model.erabiltzailea;
-import CTRLC.ERRONKA3.model.eraikina;
-import CTRLC.ERRONKA3.model.gailua;
-import CTRLC.ERRONKA3.model.gela;
-import CTRLC.ERRONKA3.model.historikoa;
-import CTRLC.ERRONKA3.model.solairua;
 import CTRLC.ERRONKA3.repository.ErabiltzaileRepository;
 import CTRLC.ERRONKA3.repository.EraikinaRepository;
 import CTRLC.ERRONKA3.repository.GailuaRepository;
@@ -45,26 +37,31 @@ public class AdminPageController {
     }
 
     @GetMapping("/admin")
-    public String adminPage(Model model, HttpSession session) {
+    public String adminKontsultaPage(Model model, HttpSession session) {
         if (!isLoggedIn(session) || !isAdmin(session)) {
             return "redirect:/login";
         }
-
-        List<erabiltzailea> erabiltzaileak = erabiltzaileRepository.findAll();
-        List<eraikina> eraikinak = eraikinaRepository.findAll();
-        List<gela> gelak = gelaRepository.findAll();
-        List<gailua> gailuak = gailuaRepository.findAll();
-        List<solairua> solairuak = solairuaRepository.findAll();
-        List<historikoa> historikoak = historikoaRepository.findAll();
-
+        loadAdminData(model, session);
+        return "Kontsulta_admi";
+    }
+    
+    private void loadAdminData(Model model, HttpSession session) {
         model.addAttribute("currentUser", session.getAttribute("loggedUser"));
         model.addAttribute("role", session.getAttribute("role"));
-        model.addAttribute("erabiltzaileak", erabiltzaileak);
-        model.addAttribute("eraikinak", eraikinak);
-        model.addAttribute("gelak", gelak);
-        model.addAttribute("gailuak", gailuak);
-        model.addAttribute("solairuak", solairuak);
-        model.addAttribute("historikoak", historikoak);
+        model.addAttribute("erabiltzaileak", erabiltzaileRepository.findAll());
+        model.addAttribute("eraikinak", eraikinaRepository.findAll());
+        model.addAttribute("gelak", gelaRepository.findAll());
+        model.addAttribute("gailuak", gailuaRepository.findAll());
+        model.addAttribute("solairuak", solairuaRepository.findAll());
+        model.addAttribute("historikoak", historikoaRepository.findAll());
+    }
+
+    @GetMapping("/admin/editatu")
+    public String adminEditorea(Model model, HttpSession session) {
+        if (!isLoggedIn(session) || !isAdmin(session)) {
+            return "redirect:/login";
+        }
+        loadAdminData(model, session);
         return "admin";
     }
 

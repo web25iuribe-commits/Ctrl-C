@@ -7,19 +7,15 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import CTRLC.ERRONKA3.model.solairua;
-import CTRLC.ERRONKA3.service.HistorikoaService;
 import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class SolairuaController {
 
     private final CTRLC.ERRONKA3.repository.SolairuaRepository solairuaRepository;
-    private final HistorikoaService historikoaService;
 
-    public SolairuaController(CTRLC.ERRONKA3.repository.SolairuaRepository solairuaRepository,
-                              HistorikoaService historikoaService) {
+    public SolairuaController(CTRLC.ERRONKA3.repository.SolairuaRepository solairuaRepository) {
         this.solairuaRepository = solairuaRepository;
-        this.historikoaService = historikoaService;
     }
 
     @PostMapping("/admin/solairua/save")
@@ -29,14 +25,14 @@ public class SolairuaController {
                                HttpSession session,
                                RedirectAttributes redirectAttributes) {
         if (!isAdmin(session)) {
-            return "redirect:/admin?accessDenied=true";
+            return "redirect:/admin/editatu?accessDenied=true";
         }
 
         Integer zenbakia = parseSolairuZenbakia(solairu_zenbakia);
         String validationError = validateSolairuaInput(id_solairua, zenbakia, id_eraikina);
         if (validationError != null) {
             redirectAttributes.addFlashAttribute("error", validationError);
-            return "redirect:/admin";
+            return "redirect:/admin/editatu";
         }
 
         try {
@@ -47,15 +43,14 @@ public class SolairuaController {
             solairuaRepository.save(solairua);
         } catch (DataIntegrityViolationException ex) {
             redirectAttributes.addFlashAttribute("error", "Ezin izan da solairua gorde: datuak ez dira baliodunak edo lotura okerrak daude.");
-            return "redirect:/admin";
+            return "redirect:/admin/editatu";
         } catch (RuntimeException ex) {
             redirectAttributes.addFlashAttribute("error", "Ezin izan da solairua gorde. Saiatu berriro datuak egiaztatuta.");
-            return "redirect:/admin";
+            return "redirect:/admin/editatu";
         }
 
-        historikoaService.logAction("solairua", "INSERT", "Solairua sortu: " + id_solairua);
         redirectAttributes.addFlashAttribute("success", "Solairua ondo sortu da.");
-        return "redirect:/admin";
+        return "redirect:/admin/editatu";
     }
 
     @PostMapping("/admin/solairua/update")
@@ -65,14 +60,14 @@ public class SolairuaController {
                                  HttpSession session,
                                  RedirectAttributes redirectAttributes) {
         if (!isAdmin(session)) {
-            return "redirect:/admin?accessDenied=true";
+            return "redirect:/admin/editatu?accessDenied=true";
         }
 
         Integer zenbakia = parseSolairuZenbakia(solairu_zenbakia);
         String validationError = validateSolairuaInput(id_solairua, zenbakia, id_eraikina);
         if (validationError != null) {
             redirectAttributes.addFlashAttribute("error", validationError);
-            return "redirect:/admin";
+            return "redirect:/admin/editatu";
         }
 
         try {
@@ -83,15 +78,14 @@ public class SolairuaController {
             solairuaRepository.save(solairua);
         } catch (DataIntegrityViolationException ex) {
             redirectAttributes.addFlashAttribute("error", "Ezin izan da solairua eguneratu: datuak ez dira baliodunak edo lotura okerrak daude.");
-            return "redirect:/admin";
+            return "redirect:/admin/editatu";
         } catch (RuntimeException ex) {
             redirectAttributes.addFlashAttribute("error", "Ezin izan da solairua eguneratu. Saiatu berriro datuak egiaztatuta.");
-            return "redirect:/admin";
+            return "redirect:/admin/editatu";
         }
 
-        historikoaService.logAction("solairua", "UPDATE", "Solairua aldatu: " + id_solairua);
         redirectAttributes.addFlashAttribute("success", "Solairua ondo eguneratu da.");
-        return "redirect:/admin";
+        return "redirect:/admin/editatu";
     }
 
     @PostMapping("/admin/solairua/delete")
@@ -99,27 +93,26 @@ public class SolairuaController {
                                  HttpSession session,
                                  RedirectAttributes redirectAttributes) {
         if (!isAdmin(session)) {
-            return "redirect:/admin?accessDenied=true";
+            return "redirect:/admin/editatu?accessDenied=true";
         }
 
         if (isBlank(id_solairua)) {
             redirectAttributes.addFlashAttribute("error", "Solairuaren IDa ezin da hutsik egon.");
-            return "redirect:/admin";
+            return "redirect:/admin/editatu";
         }
 
         try {
             solairuaRepository.deleteById(id_solairua.trim());
         } catch (DataIntegrityViolationException ex) {
             redirectAttributes.addFlashAttribute("error", "Ezin izan da solairua ezabatu: beste erregistro batzuekin lotuta dago.");
-            return "redirect:/admin";
+            return "redirect:/admin/editatu";
         } catch (RuntimeException ex) {
             redirectAttributes.addFlashAttribute("error", "Ezin izan da solairua ezabatu. Saiatu berriro.");
-            return "redirect:/admin";
+            return "redirect:/admin/editatu";
         }
 
-        historikoaService.logAction("solairua", "DELETE", "Solairua ezabatu: " + id_solairua);
         redirectAttributes.addFlashAttribute("success", "Solairua ondo ezabatu da.");
-        return "redirect:/admin";
+        return "redirect:/admin/editatu";
     }
 
     private String validateSolairuaInput(String idSolairua, Integer solairuZenbakia, String idEraikina) {

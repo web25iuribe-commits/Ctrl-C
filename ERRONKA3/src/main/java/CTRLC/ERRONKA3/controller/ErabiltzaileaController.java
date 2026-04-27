@@ -12,7 +12,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import CTRLC.ERRONKA3.model.erabiltzailea;
 import CTRLC.ERRONKA3.repository.ErabiltzaileRepository;
-import CTRLC.ERRONKA3.service.HistorikoaService;
 import jakarta.servlet.http.HttpSession;
 
 @Controller
@@ -20,15 +19,12 @@ public class ErabiltzaileaController {
 
     private static final Pattern EMAIL_PATTERN = Pattern.compile("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$");
     private static final Pattern NAN_PATTERN = Pattern.compile("^[0-9]{8}[A-Za-z]$");
-    private static final Set<String> ALLOWED_ROLES = Set.of("usuario", "administrador", "admin");
+    private static final Set<String> ALLOWED_ROLES = Set.of("erabiltzaile", "usuario", "user", "administrador", "admin");
 
     private final ErabiltzaileRepository erabiltzaileRepository;
-    private final HistorikoaService historikoaService;
 
-    public ErabiltzaileaController(ErabiltzaileRepository erabiltzaileRepository,
-                                   HistorikoaService historikoaService) {
+    public ErabiltzaileaController(ErabiltzaileRepository erabiltzaileRepository) {
         this.erabiltzaileRepository = erabiltzaileRepository;
-        this.historikoaService = historikoaService;
     }
 
     @PostMapping("/admin/erabiltzailea/save")
@@ -42,13 +38,13 @@ public class ErabiltzaileaController {
                                     HttpSession session,
                                     RedirectAttributes redirectAttributes) {
         if (!isAdmin(session)) {
-            return "redirect:/admin?accessDenied=true";
+            return "redirect:/admin/editatu?accessDenied=true";
         }
 
         String validationError = validateErabiltzaileaInput(id_erab, NAN, izena, abizena, helbide_elektronikoa, pasahitza, erabiltzaile_mota);
         if (validationError != null) {
             redirectAttributes.addFlashAttribute("error", validationError);
-            return "redirect:/admin";
+            return "redirect:/admin/editatu";
         }
 
         try {
@@ -59,20 +55,19 @@ public class ErabiltzaileaController {
             erab.setAbizena(abizena.trim());
             erab.setHelbide_elektronikoa(helbide_elektronikoa.trim().toLowerCase());
             erab.setPasahitza(pasahitza.trim());
-            erab.setErabiltzaile_mota(erabiltzaile_mota.trim().toLowerCase());
+            erab.setErabiltzaile_mota(normalizeRole(erabiltzaile_mota));
             erab.setAlta_data(new Date());
             erabiltzaileRepository.save(erab);
         } catch (DataIntegrityViolationException ex) {
             redirectAttributes.addFlashAttribute("error", "Ezin izan da erabiltzailea gorde: datuak ez dira baliodunak edo errepikatuak dira.");
-            return "redirect:/admin";
+            return "redirect:/admin/editatu";
         } catch (RuntimeException ex) {
             redirectAttributes.addFlashAttribute("error", "Ezin izan da erabiltzailea gorde. Saiatu berriro datuak egiaztatuta.");
-            return "redirect:/admin";
+            return "redirect:/admin/editatu";
         }
 
-        historikoaService.logAction("erabiltzailea", "INSERT", "Erabiltzailea sortu: " + id_erab);
         redirectAttributes.addFlashAttribute("success", "Erabiltzailea ondo sortu da.");
-        return "redirect:/admin";
+        return "redirect:/admin/editatu";
     }
 
     @PostMapping("/admin/erabiltzailea/update")
@@ -86,13 +81,13 @@ public class ErabiltzaileaController {
                                       HttpSession session,
                                       RedirectAttributes redirectAttributes) {
         if (!isAdmin(session)) {
-            return "redirect:/admin?accessDenied=true";
+            return "redirect:/admin/editatu?accessDenied=true";
         }
 
         String validationError = validateErabiltzaileaInput(id_erab, NAN, izena, abizena, helbide_elektronikoa, pasahitza, erabiltzaile_mota);
         if (validationError != null) {
             redirectAttributes.addFlashAttribute("error", validationError);
-            return "redirect:/admin";
+            return "redirect:/admin/editatu";
         }
 
         try {
@@ -104,7 +99,7 @@ public class ErabiltzaileaController {
             erab.setAbizena(abizena.trim());
             erab.setHelbide_elektronikoa(helbide_elektronikoa.trim().toLowerCase());
             erab.setPasahitza(pasahitza.trim());
-            erab.setErabiltzaile_mota(erabiltzaile_mota.trim().toLowerCase());
+            erab.setErabiltzaile_mota(normalizeRole(erabiltzaile_mota));
             Date altaData = erabiltzaileRepository.findById(normalizedId)
                 .map(erabiltzailea::getAlta_data)
                 .orElse(new Date());
@@ -112,15 +107,14 @@ public class ErabiltzaileaController {
             erabiltzaileRepository.save(erab);
         } catch (DataIntegrityViolationException ex) {
             redirectAttributes.addFlashAttribute("error", "Ezin izan da erabiltzailea eguneratu: datuak ez dira baliodunak edo errepikatuak dira.");
-            return "redirect:/admin";
+            return "redirect:/admin/editatu";
         } catch (RuntimeException ex) {
             redirectAttributes.addFlashAttribute("error", "Ezin izan da erabiltzailea eguneratu. Saiatu berriro datuak egiaztatuta.");
-            return "redirect:/admin";
+            return "redirect:/admin/editatu";
         }
 
-        historikoaService.logAction("erabiltzailea", "UPDATE", "Erabiltzailea aldatu: " + id_erab);
         redirectAttributes.addFlashAttribute("success", "Erabiltzailea ondo eguneratu da.");
-        return "redirect:/admin";
+        return "redirect:/admin/editatu";
     }
 
     @PostMapping("/admin/erabiltzailea/delete")
@@ -128,22 +122,21 @@ public class ErabiltzaileaController {
                                       HttpSession session,
                                       RedirectAttributes redirectAttributes) {
         if (!isAdmin(session)) {
-            return "redirect:/admin?accessDenied=true";
+            return "redirect:/admin/editatu?accessDenied=true";
         }
 
         try {
             erabiltzaileRepository.deleteById(id_erab);
         } catch (DataIntegrityViolationException ex) {
             redirectAttributes.addFlashAttribute("error", "Ezin izan da erabiltzailea ezabatu: beste erregistro batzuekin lotuta dago.");
-            return "redirect:/admin";
+            return "redirect:/admin/editatu";
         } catch (RuntimeException ex) {
             redirectAttributes.addFlashAttribute("error", "Ezin izan da erabiltzailea ezabatu. Saiatu berriro.");
-            return "redirect:/admin";
+            return "redirect:/admin/editatu";
         }
 
-        historikoaService.logAction("erabiltzailea", "DELETE", "Erabiltzailea ezabatu: " + id_erab);
         redirectAttributes.addFlashAttribute("success", "Erabiltzailea ondo ezabatu da.");
-        return "redirect:/admin";
+        return "redirect:/admin/editatu";
     }
 
     private String validateErabiltzaileaInput(String idErab,
@@ -174,7 +167,7 @@ public class ErabiltzaileaController {
             return "Pasahitzak gutxienez 4 karaktere izan behar ditu.";
         }
 
-        if (!ALLOWED_ROLES.contains(erabiltzaileMota.trim().toLowerCase())) {
+        if (normalizeRole(erabiltzaileMota) == null) {
             return "Erabiltzaile mota baliogabea da.";
         }
 
@@ -183,6 +176,22 @@ public class ErabiltzaileaController {
 
     private boolean isBlank(String value) {
         return value == null || value.trim().isEmpty();
+    }
+
+    private String normalizeRole(String role) {
+        if (isBlank(role)) {
+            return null;
+        }
+
+        String normalized = role.trim().toLowerCase();
+        if (!ALLOWED_ROLES.contains(normalized)) {
+            return null;
+        }
+
+        if ("admin".equals(normalized) || "administrador".equals(normalized)) {
+            return "admin";
+        }
+        return "erabiltzaile";
     }
 
     private boolean isAdmin(HttpSession session) {

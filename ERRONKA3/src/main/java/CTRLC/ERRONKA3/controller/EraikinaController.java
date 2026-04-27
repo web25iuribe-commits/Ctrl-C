@@ -7,19 +7,15 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import CTRLC.ERRONKA3.model.eraikina;
-import CTRLC.ERRONKA3.service.HistorikoaService;
 import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class EraikinaController {
 
     private final CTRLC.ERRONKA3.repository.EraikinaRepository eraikinaRepository;
-    private final HistorikoaService historikoaService;
 
-    public EraikinaController(CTRLC.ERRONKA3.repository.EraikinaRepository eraikinaRepository,
-                              HistorikoaService historikoaService) {
+    public EraikinaController(CTRLC.ERRONKA3.repository.EraikinaRepository eraikinaRepository) {
         this.eraikinaRepository = eraikinaRepository;
-        this.historikoaService = historikoaService;
     }
 
     @PostMapping("/admin/eraikina/save")
@@ -31,13 +27,13 @@ public class EraikinaController {
                                HttpSession session,
                                RedirectAttributes redirectAttributes) {
         if (!isAdmin(session)) {
-            return "redirect:/admin?accessDenied=true";
+            return "redirect:/admin/editatu?accessDenied=true";
         }
 
         String validationError = validateEraikinaInput(id_eraikina, izena, helbidea, hiria, posta_kodea);
         if (validationError != null) {
             redirectAttributes.addFlashAttribute("error", validationError);
-            return "redirect:/admin";
+            return "redirect:/admin/editatu";
         }
 
         try {
@@ -50,15 +46,14 @@ public class EraikinaController {
             eraikinaRepository.save(eraikina);
         } catch (DataIntegrityViolationException ex) {
             redirectAttributes.addFlashAttribute("error", "Ezin izan da eraikina gorde: datuak ez dira baliodunak edo errepikatuak dira.");
-            return "redirect:/admin";
+            return "redirect:/admin/editatu";
         } catch (RuntimeException ex) {
             redirectAttributes.addFlashAttribute("error", "Ezin izan da eraikina gorde. Saiatu berriro datuak egiaztatuta.");
-            return "redirect:/admin";
+            return "redirect:/admin/editatu";
         }
 
-        historikoaService.logAction("eraikina", "INSERT", "Eraikina sortu: " + id_eraikina);
         redirectAttributes.addFlashAttribute("success", "Eraikina ondo sortu da.");
-        return "redirect:/admin";
+        return "redirect:/admin/editatu";
     }
 
     @PostMapping("/admin/eraikina/update")
@@ -70,13 +65,13 @@ public class EraikinaController {
                                  HttpSession session,
                                  RedirectAttributes redirectAttributes) {
         if (!isAdmin(session)) {
-            return "redirect:/admin?accessDenied=true";
+            return "redirect:/admin/editatu?accessDenied=true";
         }
 
         String validationError = validateEraikinaInput(id_eraikina, izena, helbidea, hiria, posta_kodea);
         if (validationError != null) {
             redirectAttributes.addFlashAttribute("error", validationError);
-            return "redirect:/admin";
+            return "redirect:/admin/editatu";
         }
 
         try {
@@ -89,15 +84,14 @@ public class EraikinaController {
             eraikinaRepository.save(eraikina);
         } catch (DataIntegrityViolationException ex) {
             redirectAttributes.addFlashAttribute("error", "Ezin izan da eraikina eguneratu: datuak ez dira baliodunak edo errepikatuak dira.");
-            return "redirect:/admin";
+            return "redirect:/admin/editatu";
         } catch (RuntimeException ex) {
             redirectAttributes.addFlashAttribute("error", "Ezin izan da eraikina eguneratu. Saiatu berriro datuak egiaztatuta.");
-            return "redirect:/admin";
+            return "redirect:/admin/editatu";
         }
 
-        historikoaService.logAction("eraikina", "UPDATE", "Eraikina aldatu: " + id_eraikina);
         redirectAttributes.addFlashAttribute("success", "Eraikina ondo eguneratu da.");
-        return "redirect:/admin";
+        return "redirect:/admin/editatu";
     }
 
     @PostMapping("/admin/eraikina/delete")
@@ -105,27 +99,26 @@ public class EraikinaController {
                                  HttpSession session,
                                  RedirectAttributes redirectAttributes) {
         if (!isAdmin(session)) {
-            return "redirect:/admin?accessDenied=true";
+            return "redirect:/admin/editatu?accessDenied=true";
         }
 
         if (isBlank(id_eraikina)) {
             redirectAttributes.addFlashAttribute("error", "Eraikinaren IDa ezin da hutsik egon.");
-            return "redirect:/admin";
+            return "redirect:/admin/editatu";
         }
 
         try {
             eraikinaRepository.deleteById(id_eraikina.trim());
         } catch (DataIntegrityViolationException ex) {
             redirectAttributes.addFlashAttribute("error", "Ezin izan da eraikina ezabatu: beste erregistro batzuekin lotuta dago.");
-            return "redirect:/admin";
+            return "redirect:/admin/editatu";
         } catch (RuntimeException ex) {
             redirectAttributes.addFlashAttribute("error", "Ezin izan da eraikina ezabatu. Saiatu berriro.");
-            return "redirect:/admin";
+            return "redirect:/admin/editatu";
         }
 
-        historikoaService.logAction("eraikina", "DELETE", "Eraikina ezabatu: " + id_eraikina);
         redirectAttributes.addFlashAttribute("success", "Eraikina ondo ezabatu da.");
-        return "redirect:/admin";
+        return "redirect:/admin/editatu";
     }
 
     private String validateEraikinaInput(String idEraikina,
