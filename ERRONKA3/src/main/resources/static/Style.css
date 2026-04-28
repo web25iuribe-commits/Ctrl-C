@@ -357,7 +357,7 @@ body.bg-dark.text-white {
 .login-page {
     background: #ffffff !important;
     padding: 1.5rem;
-    padding-bottom: 5.5rem;
+    padding-bottom: 0;
 }
 
 .login-card {
