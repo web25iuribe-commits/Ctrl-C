@@ -581,12 +581,58 @@
         button.onmouseleave = () => { button.style.backgroundColor = '#0066ff'; button.style.textDecoration = 'none'; };
       });
     }
+
+    function hasDuplicateIdInTable(tableId, candidateId) {
+      const normalizedCandidate = (candidateId || '').trim().toLowerCase();
+      if (!normalizedCandidate) {
+        return false;
+      }
+
+      const rows = document.querySelectorAll('#' + tableId + ' tbody tr');
+      return Array.from(rows).some((tr) => {
+        const existingId = (tr.getAttribute('data-id') || '').trim().toLowerCase();
+        return existingId === normalizedCandidate;
+      });
+    }
+
+    function bindCreateFormDuplicateIdCheck(formSelector, idInputName, tableId) {
+      const form = document.querySelector(formSelector);
+      if (!form) {
+        return;
+      }
+
+      form.addEventListener('submit', function (event) {
+        const idInput = form.querySelector('[name="' + idInputName + '"]');
+        if (!idInput) {
+          return;
+        }
+
+        if (hasDuplicateIdInTable(tableId, idInput.value)) {
+          event.preventDefault();
+          alert('ID hori dagoeneko existitzen da. Mesedez, jarri existitzen ez den ID bat.');
+          idInput.focus();
+        }
+      });
+    }
+
+    function initDuplicateIdValidation() {
+      bindCreateFormDuplicateIdCheck('form[action="/admin/erabiltzailea/save"]', 'id_erab', 'erabiltzaileTabla');
+      bindCreateFormDuplicateIdCheck('form[action="/admin/eraikina/save"]', 'id_eraikina', 'eraikinaTabla');
+      bindCreateFormDuplicateIdCheck('form[action="/admin/gela/save"]', 'gela_zenb', 'gelaTabla');
+      bindCreateFormDuplicateIdCheck('form[action="/admin/gailua/save"]', 'id_gailua', 'gailuTabla');
+      bindCreateFormDuplicateIdCheck('form[action="/admin/solairua/save"]', 'id_solairua', 'solairuTabla');
+    }
+
+    function initializeAdminEnhancements() {
+      applyActionButtonStyles();
+      initDuplicateIdValidation();
+    }
     
     // Aplicar cuando el documento esté listo
     if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', applyActionButtonStyles);
+      document.addEventListener('DOMContentLoaded', initializeAdminEnhancements);
     } else {
-      applyActionButtonStyles();
+      initializeAdminEnhancements();
     }
 
     // ── BILAKETA ─────────────────────────────────────────

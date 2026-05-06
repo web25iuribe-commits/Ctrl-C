@@ -33,9 +33,15 @@ public class GelaController {
             return "redirect:/admin/editatu";
         }
 
+        String normalizedId = gela_zenb.trim();
+        if (gelaRepository.existsById(normalizedId)) {
+            redirectAttributes.addFlashAttribute("error", "ID hori dagoeneko existitzen da. Mesedez, jarri existitzen ez den ID bat.");
+            return "redirect:/admin/editatu";
+        }
+
         try {
             gela gela = new gela();
-            gela.setGela_zenb(gela_zenb.trim());
+            gela.setGela_zenb(normalizedId);
             gela.setId_solairua(id_solairua.trim());
             gelaRepository.save(gela);
         } catch (DataIntegrityViolationException ex) {

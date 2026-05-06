@@ -47,9 +47,15 @@ public class ErabiltzaileaController {
             return "redirect:/admin/editatu";
         }
 
+        String normalizedId = id_erab.trim();
+        if (erabiltzaileRepository.existsById(normalizedId)) {
+            redirectAttributes.addFlashAttribute("error", "ID hori dagoeneko existitzen da. Mesedez, jarri existitzen ez den ID bat.");
+            return "redirect:/admin/editatu";
+        }
+
         try {
             erabiltzailea erab = new erabiltzailea();
-            erab.setId_erab(id_erab.trim());
+            erab.setId_erab(normalizedId);
             erab.setNAN(NAN.trim().toUpperCase());
             erab.setIzena(izena.trim());
             erab.setAbizena(abizena.trim());

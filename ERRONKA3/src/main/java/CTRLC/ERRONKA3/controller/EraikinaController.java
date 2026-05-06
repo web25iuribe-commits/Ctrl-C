@@ -36,9 +36,15 @@ public class EraikinaController {
             return "redirect:/admin/editatu";
         }
 
+        String normalizedId = id_eraikina.trim();
+        if (eraikinaRepository.existsById(normalizedId)) {
+            redirectAttributes.addFlashAttribute("error", "ID hori dagoeneko existitzen da. Mesedez, jarri existitzen ez den ID bat.");
+            return "redirect:/admin/editatu";
+        }
+
         try {
             eraikina eraikina = new eraikina();
-            eraikina.setId_eraikina(id_eraikina.trim());
+            eraikina.setId_eraikina(normalizedId);
             eraikina.setIzena(izena.trim());
             eraikina.setHelbidea(helbidea.trim());
             eraikina.setHiria(hiria.trim());

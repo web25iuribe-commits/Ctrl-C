@@ -37,9 +37,15 @@ public class GailuaController {
             return "redirect:/admin/editatu";
         }
 
+        String normalizedId = id_gailua.trim();
+        if (gailuaRepository.existsById(normalizedId)) {
+            redirectAttributes.addFlashAttribute("error", "ID hori dagoeneko existitzen da. Mesedez, jarri existitzen ez den ID bat.");
+            return "redirect:/admin/editatu";
+        }
+
         try {
             gailua gailua = new gailua();
-            gailua.setId_gailua(id_gailua.trim());
+            gailua.setId_gailua(normalizedId);
             gailua.setMarka(marka.trim());
             gailua.setModeloa(modeloa.trim());
             gailua.setSerie_zenb(serie_zenb.trim());

@@ -35,9 +35,15 @@ public class SolairuaController {
             return "redirect:/admin/editatu";
         }
 
+        String normalizedId = id_solairua.trim();
+        if (solairuaRepository.existsById(normalizedId)) {
+            redirectAttributes.addFlashAttribute("error", "ID hori dagoeneko existitzen da. Mesedez, jarri existitzen ez den ID bat.");
+            return "redirect:/admin/editatu";
+        }
+
         try {
             solairua solairua = new solairua();
-            solairua.setId_solairua(id_solairua.trim());
+            solairua.setId_solairua(normalizedId);
             solairua.setSolairu_zenbakia(zenbakia);
             solairua.setId_eraikina(id_eraikina.trim());
             solairuaRepository.save(solairua);
